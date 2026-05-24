@@ -31,9 +31,10 @@ function BooksPage() {
 
   const fetchBooks = async () => {
     try {
-      const response = await getAllBooks();
+      const booksData =
+  await getAllBooks();
 
-      setBooks(response.data);
+setBooks(booksData);
     } catch (error) {
       console.log(error);
     }
@@ -71,11 +72,10 @@ function BooksPage() {
         return;
       }
 
-      const response = await searchBooks(
-        searchKeyword
-      );
+      const booksData =
+  await searchBooks(searchKeyword);
 
-      setBooks(response.data);
+setBooks(booksData);
     } catch (error) {
       console.log(error);
     }
@@ -86,10 +86,10 @@ function BooksPage() {
   const handleAvailableFilter = async () => {
     try {
       if (!showAvailableOnly) {
-        const response =
-          await getAvailableBooks();
+        const booksData =
+  await getAvailableBooks();
 
-        setBooks(response.data);
+setBooks(booksData);
       } else {
         fetchBooks();
       }

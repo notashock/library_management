@@ -1,17 +1,12 @@
 import API from "./api";
 
-export const getAllMembers = async () => {
-  return await API.get("/members");
-};
+// MEMBER DETAILS
 
-export const addMember = async (memberData) => {
-  return await API.post("/members", memberData);
-};
+export const getMemberById =
+  async (memberId) => {
+    const response = await API.get(
+      `/members/${memberId}`
+    );
 
-export const getMemberById = async (id) => {
-  return await API.get(`/members/${id}`);
-};
-
-export const getMyProfile = async () => {
-  return await API.get("/members/profile");
-};
+    return response.data;
+  };

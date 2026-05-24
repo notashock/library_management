@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 
 import { getAllBooks } from "../services/bookService";
-import { getAllMembers } from "../services/memberService";
 
 import {
-  getAllIssues,
   issueBook,
   returnBook,
 } from "../services/issueService";
 
 function IssueReturnPage() {
   const [books, setBooks] = useState([]);
-  const [members, setMembers] = useState([]);
-  const [issues, setIssues] = useState([]);
+
+  const [returnedIssueId, setReturnedIssueId] =
+    useState("");
 
   const [formData, setFormData] = useState({
     bookId: "",
@@ -20,22 +19,24 @@ function IssueReturnPage() {
   });
 
   useEffect(() => {
-    fetchData();
+    fetchBooks();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const booksRes = await getAllBooks();
-      const membersRes = await getAllMembers();
-      const issuesRes = await getAllIssues();
+  // FETCH BOOKS
 
-      setBooks(booksRes.data);
-      setMembers(membersRes.data);
-      setIssues(issuesRes.data);
+  const fetchBooks = async () => {
+    try {
+      const booksData =
+        await getAllBooks();
+
+      setBooks(booksData);
+
     } catch (error) {
       console.log(error);
     }
   };
+
+  // ISSUE BOOK
 
   const handleIssueBook = async (e) => {
     e.preventDefault();
@@ -50,7 +51,8 @@ function IssueReturnPage() {
         memberId: "",
       });
 
-      fetchData();
+      fetchBooks();
+
     } catch (error) {
       console.log(error);
 
@@ -61,13 +63,22 @@ function IssueReturnPage() {
     }
   };
 
-  const handleReturnBook = async (issueId) => {
+  // RETURN BOOK
+
+  const handleReturnBook = async () => {
     try {
-      await returnBook(issueId);
+      await returnBook(
+        returnedIssueId
+      );
 
-      alert("Book Returned Successfully");
+      alert(
+        "Book Returned Successfully"
+      );
 
-      fetchData();
+      setReturnedIssueId("");
+
+      fetchBooks();
+
     } catch (error) {
       console.log(error);
 
@@ -79,12 +90,15 @@ function IssueReturnPage() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100 p-6">
+
+      {/* PAGE TITLE */}
+
       <h1 className="text-3xl font-bold mb-6">
         Issue & Return Books
       </h1>
 
-      {/* Issue Form */}
+      {/* ISSUE BOOK FORM */}
 
       <form
         onSubmit={handleIssueBook}
@@ -95,7 +109,8 @@ function IssueReturnPage() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-4">
-          {/* Select Book */}
+
+          {/* BOOK DROPDOWN */}
 
           <select
             value={formData.bookId}
@@ -108,12 +123,15 @@ function IssueReturnPage() {
             className="border p-3 rounded-lg"
             required
           >
-            <option value="">Select Book</option>
+            <option value="">
+              Select Book
+            </option>
 
             {books
               .filter(
                 (book) =>
-                  book.availability === "AVAILABLE"
+                  book.availability ===
+                  "AVAILABLE"
               )
               .map((book) => (
                 <option
@@ -125,31 +143,25 @@ function IssueReturnPage() {
               ))}
           </select>
 
-          {/* Select Member */}
+          {/* MEMBER ID INPUT */}
 
-          <select
+          <input
+            type="number"
+            placeholder="Enter Member ID"
             value={formData.memberId}
             onChange={(e) =>
               setFormData({
                 ...formData,
-                memberId: e.target.value,
+                memberId:
+                  e.target.value,
               })
             }
             className="border p-3 rounded-lg"
             required
-          >
-            <option value="">Select Member</option>
-
-            {members.map((member) => (
-              <option
-                key={member.memberId}
-                value={member.memberId}
-              >
-                {member.name}
-              </option>
-            ))}
-          </select>
+          />
         </div>
+
+        {/* ISSUE BUTTON */}
 
         <button
           type="submit"
@@ -159,78 +171,38 @@ function IssueReturnPage() {
         </button>
       </form>
 
-      {/* Active Issues Table */}
+      {/* RETURN BOOK SECTION */}
 
       <div className="bg-white shadow-md rounded-xl p-6">
+
         <h2 className="text-2xl font-semibold mb-4">
-          Active Issues
+          Return Book
         </h2>
 
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="p-3 text-left">Issue ID</th>
-                <th className="p-3 text-left">Book</th>
-                <th className="p-3 text-left">Member</th>
-                <th className="p-3 text-left">Issue Date</th>
-                <th className="p-3 text-left">Status</th>
-                <th className="p-3 text-left">Action</th>
-              </tr>
-            </thead>
+        <div className="flex flex-col md:flex-row gap-4">
 
-            <tbody>
-              {issues.map((issue) => (
-                <tr
-                  key={issue.issueId}
-                  className="border-b"
-                >
-                  <td className="p-3">
-                    {issue.issueId}
-                  </td>
+          {/* ISSUE ID INPUT */}
 
-                  <td className="p-3">
-                    {issue.book?.title}
-                  </td>
+          <input
+            type="number"
+            placeholder="Enter Issue ID"
+            value={returnedIssueId}
+            onChange={(e) =>
+              setReturnedIssueId(
+                e.target.value
+              )
+            }
+            className="border p-3 rounded-lg flex-1"
+          />
 
-                  <td className="p-3">
-                    {issue.member?.name}
-                  </td>
+          {/* RETURN BUTTON */}
 
-                  <td className="p-3">
-                    {issue.issueDate}
-                  </td>
-
-                  <td className="p-3">
-                    <span
-                      className={`px-3 py-1 rounded-full text-white text-sm ${
-                        issue.status === "ACTIVE"
-                          ? "bg-green-500"
-                          : "bg-gray-500"
-                      }`}
-                    >
-                      {issue.status}
-                    </span>
-                  </td>
-
-                  <td className="p-3">
-                    {issue.status === "ACTIVE" && (
-                      <button
-                        onClick={() =>
-                          handleReturnBook(
-                            issue.issueId
-                          )
-                        }
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                      >
-                        Return
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <button
+            onClick={handleReturnBook}
+            className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg"
+          >
+            Return Book
+          </button>
         </div>
       </div>
     </div>

@@ -1,134 +1,89 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+
 import {
-  getAllMembers,
-  addMember,
+  getMemberById,
 } from "../services/memberService";
 
 function MembersPage() {
-  const [members, setMembers] = useState([]);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-  });
+  const [memberId, setMemberId] =
+    useState("");
 
-  useEffect(() => {
-    fetchMembers();
-  }, []);
+  const [member, setMember] =
+    useState(null);
 
-  const fetchMembers = async () => {
+  const handleSearch = async () => {
     try {
-      const response = await getAllMembers();
-      setMembers(response.data);
+
+      const memberData =
+        await getMemberById(memberId);
+
+      setMember(memberData);
+
     } catch (error) {
+
       console.log(error);
-    }
-  };
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      await addMember(formData);
-
-      setFormData({
-        name: "",
-        email: "",
-      });
-
-      fetchMembers();
-
-      alert("Member Added Successfully");
-    } catch (error) {
-      console.log(error);
-      alert("Failed to Add Member");
+      alert("Member Not Found");
     }
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100 p-6">
+
       <h1 className="text-3xl font-bold mb-6">
-        Members Management
+        Member Details
       </h1>
 
-      {/* Add Member Form */}
+      {/* SEARCH */}
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-xl p-6 mb-8"
-      >
-        <h2 className="text-2xl font-semibold mb-4">
-          Add New Member
-        </h2>
+      <div className="bg-white p-6 rounded-xl shadow-md mb-8">
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter Name"
-            value={formData.name}
-            onChange={handleChange}
-            className="border p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-400"
-            required
-          />
+        <div className="flex gap-4">
 
           <input
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="border p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-400"
-            required
+            type="number"
+            placeholder="Enter Member ID"
+            value={memberId}
+            onChange={(e) =>
+              setMemberId(e.target.value)
+            }
+            className="border p-3 rounded-lg flex-1"
           />
-        </div>
 
-        <button
-          type="submit"
-          className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
-        >
-          Add Member
-        </button>
-        <Link
-  to={`/members/${member.memberId}`}
-  className="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
->
-  View Details
-</Link>
-      </form>
-            
-      {/* Members List */}
-
-      <div className="grid md:grid-cols-3 gap-4">
-        {members.map((member) => (
-          <div
-            key={member.memberId}
-            className="bg-white shadow-md rounded-xl p-5"
+          <button
+            onClick={handleSearch}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
           >
-            <h2 className="text-xl font-semibold">
-              {member.name}
-            </h2>
-
-            <p className="text-gray-600 mt-2">
-              {member.email}
-            </p>
-
-            <div className="mt-4">
-              <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                Member ID: {member.memberId}
-              </span>
-            </div>
-          </div>
-        ))}
+            Search
+          </button>
+        </div>
       </div>
+
+      {/* MEMBER DETAILS */}
+
+      {member && (
+
+        <div className="bg-white shadow-md rounded-xl p-6">
+
+          <h2 className="text-2xl font-semibold">
+            {member.name}
+          </h2>
+
+          <p className="mt-2 text-gray-600">
+            {member.email}
+          </p>
+
+          <p className="mt-2">
+            Role: {member.role}
+          </p>
+
+          <p className="mt-2">
+            Member ID: {member.memberId}
+          </p>
+
+        </div>
+      )}
     </div>
   );
 }
