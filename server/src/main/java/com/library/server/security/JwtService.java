@@ -33,24 +33,9 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-   public String generateToken(UserDetails userDetails) {
-
-    Map<String, Object> claims =
-            new HashMap<>();
-
-    if (userDetails instanceof User user) {
-
-        claims.put(
-                "role",
-                user.getRole().name()
-        );
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
     }
-
-    return generateToken(
-            claims,
-            userDetails
-    );
-}
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder()
