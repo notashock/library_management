@@ -55,20 +55,18 @@ function Login() {
 
       const token =
         response.data.token;
+         const role =response.data.role;
 
       // SAVE TOKEN
 
-      login(token);
+      login(token,role);
 
       // DECODE TOKEN
 
-      const decoded =
-        jwtDecode(token);
 
-      const role =
-        decoded.role;
-        console.log(decoded);
-console.log(role);
+
+  
+
 
       alert("Login Successful");
 
