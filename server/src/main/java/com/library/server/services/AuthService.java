@@ -30,7 +30,7 @@ public class AuthService {
                 .build();
         memberRepository.save(member);
         var jwtToken = jwtService.generateToken(member);
-        return AuthResponseDTO.builder().token(jwtToken).build();
+        return AuthResponseDTO.builder().email(member.getEmail()).role(member.getRole()).token(jwtToken).build();
     }
 
     public AuthResponseDTO authenticate(AuthRequestDTO request) {
@@ -40,6 +40,6 @@ public class AuthService {
         var member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(member);
-        return AuthResponseDTO.builder().token(jwtToken).build();
+        return AuthResponseDTO.builder().email(member.getEmail()).role(member.getRole()).token(jwtToken).build();
     }
 }
