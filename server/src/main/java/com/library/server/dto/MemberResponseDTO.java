@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberResponseDTO {
     private Long memberId;
+    private String name;
     private String username;
     private Role role;
     private String email;

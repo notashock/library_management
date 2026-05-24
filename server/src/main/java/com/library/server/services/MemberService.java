@@ -26,7 +26,7 @@ public class MemberService {
 
         return MemberResponseDTO.builder()
                 .memberId(member.getMemberId())
-//                .name(member.getName())
+                .name(member.getName())
                 .email(member.getEmail())
                 .role(member.getRole())
                 .build();
