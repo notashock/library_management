@@ -8,6 +8,7 @@ import {
 } from "../services/bookService";
 
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 function BooksPage() {
   const { user } = useAuth();
@@ -36,7 +37,8 @@ function BooksPage() {
 
 setBooks(booksData);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("Failed to fetch books.");
     }
   };
 
@@ -48,7 +50,7 @@ setBooks(booksData);
     try {
       await addBook(formData);
 
-      alert("Book Added Successfully");
+      toast.success("Book Added Successfully");
 
       setFormData({
         title: "",
@@ -57,9 +59,9 @@ setBooks(booksData);
 
       fetchBooks();
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
-      alert("Failed to Add Book");
+      toast.error("Failed to Add Book");
     }
   };
 
@@ -77,7 +79,8 @@ setBooks(booksData);
 
 setBooks(booksData);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("Failed to search books.");
     }
   };
 
@@ -98,7 +101,8 @@ setBooks(booksData);
         !showAvailableOnly
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("Failed to filter books.");
     }
   };
 

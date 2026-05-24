@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Navbar from "./components/Navbar";
 
@@ -10,6 +12,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Unauthorized from "./pages/Unauthorized";
 import MemberDetails from "./pages/MemberDetails";
+import MyProfile from "./pages/MyProfile";
+import MyBooks from "./pages/MyBooks";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -17,7 +21,7 @@ function App() {
 
   return (
     <div>
-
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover />
       <Navbar />
 
       <div className="p-6">
@@ -105,6 +109,26 @@ function App() {
                 allowedRoles={["LIBRARIAN"]}
               >
                 <IssueReturnPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* MY PROFILE (MEMBER ONLY) */}
+          <Route
+            path="/my-profile"
+            element={
+              <ProtectedRoute allowedRoles={["MEMBER"]}>
+                <MyProfile />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* MY BOOKS (MEMBER ONLY) */}
+          <Route
+            path="/my-books"
+            element={
+              <ProtectedRoute allowedRoles={["MEMBER"]}>
+                <MyBooks />
               </ProtectedRoute>
             }
           />

@@ -55,7 +55,22 @@ function Navbar() {
 
           {/* Member Routes */}
 
-          
+          {user?.role === "MEMBER" && (
+            <>
+              <Link
+                to="/my-books"
+                className="hover:text-gray-200"
+              >
+                My Books
+              </Link>
+              <Link
+                to="/my-profile"
+                className="hover:text-gray-200"
+              >
+                My Profile
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Right Side */}

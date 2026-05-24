@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponseDTO {
-    private String token;
-//    private String name;
-    private String email;
-    private Role role;
+public class MemberResponseDTO {
     private Long memberId;
+    private String username;
+    private Role role;
+    private String email;
 }

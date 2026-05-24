@@ -20,15 +20,19 @@ export const AuthProvider = ({ children }) => {
   const role =
     localStorage.getItem("role");
 
+  const memberId =
+    localStorage.getItem("memberId");
+
   if (token && role) {
 
     setUser({
       role,
+      memberId,
     });
   }
 
 }, []);
- const login = (token, role) => {
+ const login = (token, role, memberId) => {
 
   localStorage.setItem(
     "token",
@@ -40,8 +44,16 @@ export const AuthProvider = ({ children }) => {
     role
   );
 
+  if (memberId) {
+    localStorage.setItem(
+      "memberId",
+      memberId
+    );
+  }
+
   setUser({
     role,
+    memberId,
   });
 };
 
@@ -49,6 +61,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
 
 localStorage.removeItem("role");
+localStorage.removeItem("memberId");
 
     setUser(null);
   };

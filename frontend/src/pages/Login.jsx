@@ -10,6 +10,7 @@ import { jwtDecode } from "jwt-decode";
 import API from "../services/api";
 
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 function Login() {
 
@@ -55,11 +56,14 @@ function Login() {
 
       const token =
         response.data.token;
-         const role =response.data.role;
+      const role =
+        response.data.role;
+      const memberId =
+        response.data.memberId;
 
       // SAVE TOKEN
 
-      login(token,role);
+      login(token, role, memberId);
 
       // DECODE TOKEN
 
@@ -68,7 +72,7 @@ function Login() {
   
 
 
-      alert("Login Successful");
+      toast.success("Login Successful");
 
       // ROLE BASED NAVIGATION
 
@@ -87,9 +91,9 @@ function Login() {
 
     } catch (error) {
 
-      console.log(error);
+      console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Invalid Credentials"
       );

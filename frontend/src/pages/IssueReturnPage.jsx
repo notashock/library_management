@@ -6,6 +6,7 @@ import {
   issueBook,
   returnBook,
 } from "../services/issueService";
+import { toast } from "react-toastify";
 
 function IssueReturnPage() {
   const [books, setBooks] = useState([]);
@@ -32,7 +33,8 @@ function IssueReturnPage() {
       setBooks(booksData);
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error("Failed to fetch books.");
     }
   };
 
@@ -44,7 +46,7 @@ function IssueReturnPage() {
     try {
       await issueBook(formData);
 
-      alert("Book Issued Successfully");
+      toast.success("Book Issued Successfully");
 
       setFormData({
         bookId: "",
@@ -54,9 +56,9 @@ function IssueReturnPage() {
       fetchBooks();
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to Issue Book"
       );
@@ -71,7 +73,7 @@ function IssueReturnPage() {
         returnedIssueId
       );
 
-      alert(
+      toast.success(
         "Book Returned Successfully"
       );
 
@@ -80,9 +82,9 @@ function IssueReturnPage() {
       fetchBooks();
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to Return Book"
       );

@@ -6,6 +6,7 @@ import {
   getMemberById,
   getMemberIssues,
 } from "../services/memberService";
+import { toast } from "react-toastify";
 
 function MembersPage() {
 
@@ -43,7 +44,7 @@ function MembersPage() {
         registerData
       );
 
-      alert(
+      toast.success(
         "Member Registered Successfully"
       );
 
@@ -56,9 +57,9 @@ function MembersPage() {
 
     } catch (error) {
 
-      console.log(error);
+      console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Registration Failed"
       );
@@ -83,9 +84,9 @@ function MembersPage() {
 
     } catch (error) {
 
-      console.log(error);
+      console.error(error);
 
-      alert("Member Not Found");
+      toast.error("Member Not Found");
     }
   };
 
