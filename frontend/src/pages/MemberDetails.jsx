@@ -28,7 +28,7 @@ function MemberDetails() {
 
       setMember(memberRes.data);
 
-      setIssuedBooks(issuesRes.data);
+      setIssuedBooks(issuesRes);
     } catch (error) {
       console.log(error);
     }

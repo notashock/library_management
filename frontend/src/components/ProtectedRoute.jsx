@@ -7,6 +7,9 @@ function ProtectedRoute({
   allowedRoles,
 }) {
   const { user } = useAuth();
+  console.log(user);
+console.log(allowedRoles);
+console.log(user?.role);
 
   if (!user) {
     return <Navigate to="/login" />;

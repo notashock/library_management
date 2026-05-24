@@ -1,4 +1,4 @@
-package com.library.server.controllers;
+package com.library.server.Controllers;
 
 import com.library.server.dto.AuthRequestDTO;
 import com.library.server.dto.AuthResponseDTO;

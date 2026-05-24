@@ -7,38 +7,44 @@ import BooksPage from "./pages/BooksPage";
 import MembersPage from "./pages/MembersPage";
 import IssueReturnPage from "./pages/IssueReturnPage";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Unauthorized from "./pages/Unauthorized";
+import MemberDetails from "./pages/MemberDetails";
 
 import ProtectedRoute from "./components/ProtectedRoute";
-import MemberDetails from "./pages/MemberDetails";
-import MyProfile from "./pages/MyProfile";
-import MyBooks from "./pages/MyBooks";
-import Register from "./pages/Register";
 
 function App() {
+
   return (
     <div>
+
       <Navbar />
 
       <div className="p-6">
+
         <Routes>
-          {/* Public Route */}
-           <Route path='/'  element={<Login />} />
-          <Route path="/login" element={<Login />} />
+
+          {/* PUBLIC ROUTES */}
+
           <Route
-  path="/register"
-  element={<Register />}
-/>
+            path="/login"
+            element={<Login />}
+          />
+
+          <Route
+            path="/register"
+            element={<Register />}
+          />
 
           <Route
             path="/unauthorized"
             element={<Unauthorized />}
           />
 
-          {/* Librarian Routes */}
+          {/* LIBRARIAN DASHBOARD */}
 
           <Route
-            path="/"
+            path="/dashboard"
             element={
               <ProtectedRoute
                 allowedRoles={["LIBRARIAN"]}
@@ -47,6 +53,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* BOOKS */}
 
           <Route
             path="/books"
@@ -62,6 +70,8 @@ function App() {
             }
           />
 
+          {/* MEMBERS */}
+
           <Route
             path="/members"
             element={
@@ -73,6 +83,21 @@ function App() {
             }
           />
 
+          {/* MEMBER DETAILS */}
+
+          <Route
+            path="/members/:memberId"
+            element={
+              <ProtectedRoute
+                allowedRoles={["LIBRARIAN"]}
+              >
+                <MemberDetails />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ISSUES */}
+
           <Route
             path="/issues"
             element={
@@ -83,39 +108,9 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-  path="/members/:memberId"
-  element={
-    <ProtectedRoute
-      allowedRoles={["LIBRARIAN"]}
-    >
-      <MemberDetails />
-    </ProtectedRoute>
-  }
-/>
 
-<Route
-  path="/my-profile"
-  element={
-    <ProtectedRoute
-      allowedRoles={["MEMBER"]}
-    >
-      <MyProfile />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/my-books"
-  element={
-    <ProtectedRoute
-      allowedRoles={["MEMBER"]}
-    >
-      <MyBooks />
-    </ProtectedRoute>
-  }
-/>
         </Routes>
+
       </div>
     </div>
   );

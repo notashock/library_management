@@ -1,25 +1,37 @@
 import API from "./api";
 
-export const getAllIssues = async () => {
-  return await API.get("/issues");
-};
+// ISSUE BOOK
 
-export const issueBook = async (data) => {
-  return await API.post("/issues/issue", data);
-};
-
-export const returnBook = async (issueId) => {
-  return await API.put(`/issues/return/${issueId}`);
-};
-
-export const getIssuesByMember = async (
-  memberId
+export const issueBook = async (
+  data
 ) => {
-  return await API.get(
-    `/issues/member/${memberId}`
+  const response = await API.post(
+    "/issues/issue",
+    data
   );
+
+  return response.data;
 };
 
-export const getMyBooks = async () => {
-  return await API.get("/issues/my-books");
+// RETURN BOOK
+
+export const returnBook = async (
+  issueId
+) => {
+  const response = await API.put(
+    `/issues/return/${issueId}`
+  );
+
+  return response.data;
 };
+
+// MEMBER ISSUES
+
+export const getIssuesByMember =
+  async (memberId) => {
+    const response = await API.get(
+      `/members/${memberId}/issues`
+    );
+
+    return response.data;
+  };
