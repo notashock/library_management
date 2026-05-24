@@ -1,4 +1,4 @@
-package com.library.server.Controllers;
+package com.library.server.controllers;
 
 import com.library.server.models.Entities.IssueRecord;
 import com.library.server.models.Entities.Member;

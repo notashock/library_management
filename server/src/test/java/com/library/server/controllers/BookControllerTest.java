@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.library.server.dto.BookRequestDTO;
 import com.library.server.dto.BookResponseDTO;
 import com.library.server.models.enums.BookStatus;
+import com.library.server.security.CustomUserDetailsService;
+import com.library.server.security.JwtService;
 import com.library.server.services.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,8 +26,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = BookController.class)
-@AutoConfigureMockMvc(addFilters = false) // Bypass JWT security for pure controller testing
+// --- THE FIX: Exclude Spring's default security user manager ---
+@WebMvcTest(
+        controllers = BookController.class,
+        excludeAutoConfiguration = UserDetailsServiceAutoConfiguration.class
+)
+@AutoConfigureMockMvc(addFilters = false)
 class BookControllerTest {
 
     @Autowired
@@ -35,6 +42,12 @@ class BookControllerTest {
 
     @MockBean
     private BookService bookService;
+
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private CustomUserDetailsService customUserDetailsService;
 
     private BookRequestDTO requestDTO;
     private BookResponseDTO responseDTO;

@@ -36,6 +36,11 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 1. Enable CORS
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Token missing or invalid")
+                        )
+                )
                 .authorizeHttpRequests(auth -> auth
                         // Public Endpoints
                         .requestMatchers(
